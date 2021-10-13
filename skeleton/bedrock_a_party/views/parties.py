@@ -10,26 +10,21 @@ _LOADED_PARTIES = {}  # dict of available parties
 _PARTY_NUMBER = 0  # index of the last created party
 
 
-# TODO: complete the decoration
 @parties.route("/parties",methods=['GET','POST'])
 def all_parties():
     result = None
     if request.method == 'POST':
         try:
-            # TODO: create a party
             result = create_party(request)
         except CannotPartyAloneError:
-            # TODO: return 400
             abort(400) # 400: bad request
 
     elif request.method == 'GET':
-        # TODO: get all the parties
         result = get_all_parties()
 
     return result
 
 
-# TODO: complete the decoration
 @parties.route("/parties/loaded",methods=['GET'])
 def loaded_parties():
     global _LOADED_PARTIES
@@ -37,22 +32,18 @@ def loaded_parties():
     return jsonify({"loaded_parties" : len(_LOADED_PARTIES)})
 
 
-# TODO: complete the decoration
 @parties.route("/party/<id>",methods=['GET','DELETE'])
 def single_party(id):
     global _LOADED_PARTIES
     result = ""
 
-    # TODO: check if the party is an existing one
     exists_party(id)
 
     if 'GET' == request.method:
-        # TODO: retrieve a party
         result= _LOADED_PARTIES[id].serialize()
         
 
     elif 'DELETE' == request.method:
-        # TODO: delete a party
         result = _LOADED_PARTIES.pop(id,None).serialize()
 
     return jsonify(result)
@@ -64,25 +55,20 @@ def get_foodlist(id):
     global _LOADED_PARTIES
     result = ""
 
-    # TODO: check if the party is an existing one
     exists_party(id)
 
     if 'GET' == request.method:
-        # TODO: retrieve food-list of the party
        result= _LOADED_PARTIES[id].get_food_list().serialize()
 
 
     return jsonify({"foodlist":result})
 
 
-# TODO: complete the decoration
 @parties.route("/party/<id>/foodlist/<user>/<item>",methods=['DELETE','POST'])
 def edit_foodlist(id, user, item):
     global _LOADED_PARTIES
 
-    # TODO: check if the party is an existing one
     exists_party(id)
-    # TODO: retrieve the party
     party=_LOADED_PARTIES[id]
     result = ""
 
